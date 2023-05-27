@@ -80,7 +80,7 @@ export default function Home() {
   ];
   const pagination: number[] = [1, 2, 3, 4, 5, 6];
   return (
-    <main className="">
+    <main className="font-mono">
       <div className="flex flex-col justify-between border min-h-screen pb-20 px-10">
         <Navbar />
         <div>
@@ -109,7 +109,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="text-center py-10 font-bold text-[35px] px-10 bg-green-600 text-white">
+      <div className="text-center py-10 font-bold text-[30px] px-10 bg-green-600 text-white">
         Our mission is to create an agile, fair, fail-safe, humanist, and
         harmony working environment
       </div>
