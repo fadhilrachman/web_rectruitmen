@@ -9,6 +9,7 @@ interface Props {
   value?: string | number | Date;
   errMessage?: string;
   name?: string;
+  disabled?: boolean;
   onBlur?: React.FocusEventHandler<HTMLInputElement>;
 }
 const BaseInput = ({
@@ -19,6 +20,7 @@ const BaseInput = ({
   errMessage,
   value,
   isInvalid,
+  disabled,
   name,
   onBlur,
 }: Props) => {
@@ -28,10 +30,11 @@ const BaseInput = ({
       <input
         className={`${className} ${
           isInvalid ? "border-red-500" : ""
-        } shadow   border rounded  py-2 px-3 text-gray-700 bg-white focus:outline-none focus:shadow-outline`}
+        } shadow   border rounded w-full py-2 px-3 text-gray-700 bg-white focus:outline-none focus:shadow-outline`}
         onChange={onChange}
         type={type}
         name={name}
+        disabled={disabled}
         placeholder={placeholder}
         value={formattedValue}
         onBlur={onBlur}

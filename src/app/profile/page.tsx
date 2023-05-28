@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Navbar from "@/components/Navbar";
 import ProfileInformation from "@/components/ProfileInformation";
 import Application from "@/components/Application";
+import Link from "next/link";
 
 const page = () => {
   const [tab, setTab] = useState<string>("Profile Inofmation");
@@ -10,7 +11,7 @@ const page = () => {
   return (
     <div className="">
       <Navbar />
-      <div className="px-20 py-10 w-8/12">
+      <div className=" px-5 md:px-10 py-10 xl:w-10/12">
         <h1 className="text-3xl font-bold">Fadhil Rahman</h1>
 
         <div className="mt-5">

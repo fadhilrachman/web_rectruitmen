@@ -1,11 +1,33 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
+import ModalAbout from "./Modal/ModalAbout";
+import ModalEducation from "./Modal/ModalEducation";
+import ModalExperience from "./Modal/ModalExperience";
 
+interface Modal {
+  modalAbout: boolean;
+  modalExperience: boolean;
+  modalEducation: boolean;
+}
 const ProfileInformation = () => {
+  const [modal, setModal] = useState<Modal>({
+    modalAbout: false,
+    modalEducation: false,
+    modalExperience: false,
+  });
   return (
     <div className="mt-14">
       {/* About */}
       <div>
-        <div className="text-[25px] font-semibold border-b-2">About Me</div>
+        <div className="border-b-2 flex justify-between items-center">
+          <h1 className="text-[25px] font-semibold ">About Me</h1>
+          <span
+            className="text-green-600 underline hover:cursor-pointer"
+            onClick={() => setModal({ ...modal, modalAbout: true })}
+          >
+            Edit
+          </span>
+        </div>
         <p className="mt-5 font-light text-gray-700">
           As a Front-end developer, I have the ability to design and implement
           the visual appearance of applications or websites. I use programming
@@ -20,8 +42,14 @@ const ProfileInformation = () => {
 
       {/* work experience */}
       <div className="mt-10">
-        <div className="text-[25px] font-semibold border-b-2">
-          work experience
+        <div className="border-b-2 flex flex-col items-start  justify-between md:flex-row md:items-center">
+          <h1 className="text-[25px] font-semibold ">Work Experience</h1>
+          <span
+            className="text-green-600 underline hover:cursor-pointer"
+            onClick={() => setModal({ ...modal, modalExperience: true })}
+          >
+            Add Work Experience
+          </span>
         </div>
         <div className="mt-5">
           <h3 className="font-semibold text-[19px]">- Frontend Developer</h3>
@@ -49,7 +77,15 @@ const ProfileInformation = () => {
 
       {/* EDUCATION */}
       <div className="mt-10">
-        <div className="text-[25px] font-semibold border-b-2">Education</div>
+        <div className="border-b-2 flex flex-col items-start  justify-between md:flex-row md:items-center">
+          <h1 className="text-[25px] font-semibold ">Education</h1>
+          <span
+            className="text-green-600 underline hover:cursor-pointer"
+            onClick={() => setModal({ ...modal, modalEducation: true })}
+          >
+            Add Education
+          </span>
+        </div>
         <div className="mt-5">
           <h3 className="font-semibold text-[19px]">- SMK 2 Garut</h3>
           <h4 className="font-light">Jurusan IPA</h4>
@@ -66,6 +102,18 @@ const ProfileInformation = () => {
           <p className="font-light text-gray-700 mt-3"> Juni 2022 - mei 2022</p>
         </div>
       </div>
+      <ModalAbout
+        show={modal.modalAbout}
+        onHide={() => setModal({ ...modal, modalAbout: false })}
+      />
+      <ModalExperience
+        show={modal.modalExperience}
+        onHide={() => setModal({ ...modal, modalExperience: false })}
+      />
+      <ModalEducation
+        show={modal.modalEducation}
+        onHide={() => setModal({ ...modal, modalEducation: false })}
+      />
     </div>
   );
 };
