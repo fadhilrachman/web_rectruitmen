@@ -51,15 +51,25 @@ const ProfileInformation = () => {
             Add Work Experience
           </span>
         </div>
-        <div className="mt-5">
-          <h3 className="font-semibold text-[19px]">- Frontend Developer</h3>
-          <h4 className="font-light">Sagara</h4>
-          <div className="font-light text-gray-700 mt-3">
-            <p>Juni 2022 - mei 2022</p>
-            <p>
-              Membuat Dashboard untuk perusahaan ikan menggunakan react js
-              dengan state management redux-sage dan css framework bootstrap
-            </p>
+        <div className="mt-5 flex flex-col md:flex-row justify-between group">
+          <div className="">
+            <h3 className="font-semibold text-[19px]">- Frontend Developer</h3>
+            <h4 className="font-light">Sagara</h4>
+            <div className="font-light text-gray-700 mt-3">
+              <p>Juni 2022 - mei 2022</p>
+              <p>
+                Membuat Dashboard untuk perusahaan ikan menggunakan react js
+                dengan state management redux-sage dan css framework bootstrap
+              </p>
+            </div>
+          </div>
+          <div className="  mt-4 hidden group-hover:block">
+            <span className="text-sky-700 mr-3 underline hover:cursor-pointer ">
+              Edit
+            </span>
+            <span className="text-red-500 underline hover:cursor-pointer ">
+              Delete
+            </span>
           </div>
         </div>
         <div className="mt-5">
@@ -86,10 +96,23 @@ const ProfileInformation = () => {
             Add Education
           </span>
         </div>
-        <div className="mt-5">
-          <h3 className="font-semibold text-[19px]">- SMK 2 Garut</h3>
-          <h4 className="font-light">Jurusan IPA</h4>
-          <p className="font-light text-gray-700 mt-3"> Juni 2022 - mei 2022</p>
+        <div className="mt-5 flex flex-col md:flex-row justify-between group">
+          <div>
+            <h3 className="font-semibold text-[19px]">- SMK 2 Garut</h3>
+            <h4 className="font-light">Jurusan IPA</h4>
+            <p className="font-light text-gray-700 mt-3">
+              {" "}
+              Juni 2022 - mei 2022
+            </p>
+          </div>
+          <div className=" mt-4 hidden group-hover:block">
+            <span className="text-sky-700 mr-3 underline hover:cursor-pointer ">
+              Edit
+            </span>
+            <span className="text-red-500 underline hover:cursor-pointer ">
+              Delete
+            </span>
+          </div>
         </div>
         <div className="mt-5">
           <h3 className="font-semibold text-[19px]">- SMK 2 Garut</h3>
