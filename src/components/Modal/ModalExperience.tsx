@@ -5,10 +5,17 @@ import TextArea from "../TextArea";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import BaseInput from "../BaseInput";
-
+import { useDispatch, useSelector } from "react-redux";
+import { ThunkDispatch, AnyAction } from "@reduxjs/toolkit";
+import { RootState } from "@/redux/reducer";
+import {
+  createWork_experience,
+  editDataProfile,
+  getDataProfile,
+} from "@/redux/UserSlice";
 interface Props {
   show: boolean;
-  onHide: MouseEventHandler<HTMLButtonElement>;
+  onHide: any;
   functDelete?: MouseEventHandler<HTMLButtonElement>;
 }
 
@@ -20,6 +27,10 @@ interface InitialValues {
   additional_information: string;
 }
 const ModalExperience = ({ show, onHide, functDelete }: Props) => {
+  const user = useSelector((state: RootState) => state.User);
+  const dispatch: ThunkDispatch<RootState, undefined, AnyAction> =
+    useDispatch();
+  const dataUser = user.dataDetail;
   const initialValues: InitialValues = {
     company_name: "",
     position: "",
@@ -36,9 +47,15 @@ const ModalExperience = ({ show, onHide, functDelete }: Props) => {
       end_date: Yup.string().required("cannot be empty"),
       additional_information: Yup.string().required("cannot be empty"),
     }),
-    onSubmit: () => {},
-    validateOnChange: false, // Tidak memicu validasi saat nilai input berubah
-    validateOnBlur: false,
+    onSubmit: async (val) => {
+      const obj = { ...val, id: dataUser._id };
+      console.log(obj);
+
+      await dispatch(createWork_experience(obj));
+      await dispatch(getDataProfile());
+      formik.resetForm();
+      onHide();
+    },
   });
 
   console.log(formik.errors);
@@ -68,18 +85,24 @@ const ModalExperience = ({ show, onHide, functDelete }: Props) => {
                 className=""
                 name="company_name"
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
                 value={formik.values.company_name}
                 errMessage={formik.errors?.company_name}
-                isInvalid={!!formik.errors?.company_name}
+                isInvalid={
+                  !!formik.errors?.company_name && !!formik.touched.company_name
+                }
               />
               <BaseInput
                 placeholder="position"
                 className="mt-5"
                 name="position"
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
                 value={formik.values.position}
                 errMessage={formik.errors?.position}
-                isInvalid={!!formik.errors?.position}
+                isInvalid={
+                  !!formik.errors?.position && !!formik.touched.position
+                }
               />
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-5">
                 <div>
@@ -90,9 +113,12 @@ const ModalExperience = ({ show, onHide, functDelete }: Props) => {
                     type="date"
                     name="start_date"
                     onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                     value={formik.values.start_date}
                     errMessage={formik.errors?.start_date}
-                    isInvalid={!!formik.errors?.start_date}
+                    isInvalid={
+                      !!formik.errors?.start_date && !!formik.touched.start_date
+                    }
                   />
                 </div>
                 <div>
@@ -103,9 +129,12 @@ const ModalExperience = ({ show, onHide, functDelete }: Props) => {
                     type="date"
                     name="end_date"
                     onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                     value={formik.values.end_date}
                     errMessage={formik.errors?.end_date}
-                    isInvalid={!!formik.errors?.end_date}
+                    isInvalid={
+                      !!formik.errors?.end_date && !!formik.touched.end_date
+                    }
                   />
                 </div>
               </div>
@@ -114,9 +143,13 @@ const ModalExperience = ({ show, onHide, functDelete }: Props) => {
                 className="mt-3"
                 name="additional_information"
                 onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
                 value={formik.values.additional_information}
                 errMessage={formik.errors?.additional_information}
-                isInvalid={!!formik.errors?.additional_information}
+                isInvalid={
+                  !!formik.errors?.additional_information &&
+                  !!formik.touched.additional_information
+                }
               />
             </div>
             {/*footer*/}

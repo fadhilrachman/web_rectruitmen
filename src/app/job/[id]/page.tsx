@@ -85,7 +85,11 @@ const index = ({ params }: { params: { id: string } }) => {
           </BaseButton>
         </div>
       </div>
-      <ModalApplication show={modal} onHide={() => setModal(false)} />
+      <ModalApplication
+        id={dataJob?._id}
+        show={modal}
+        onHide={() => setModal(false)}
+      />
     </div>
   );
 };

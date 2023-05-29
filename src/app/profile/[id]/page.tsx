@@ -5,7 +5,7 @@ import ProfileInformation from "@/components/ProfileInformation";
 import Application from "@/components/Application";
 import Link from "next/link";
 
-const page = () => {
+const page = ({ params }: { params: { id: string } }) => {
   const [tab, setTab] = useState<string>("Profile Inofmation");
   const tabs: string[] = ["Profile Inofmation", "Application"];
   return (

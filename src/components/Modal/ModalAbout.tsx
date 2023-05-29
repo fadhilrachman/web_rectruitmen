@@ -4,26 +4,37 @@ import BaseButton from "../BaseButton";
 import TextArea from "../TextArea";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-
+import { useDispatch, useSelector } from "react-redux";
+import { ThunkDispatch, AnyAction } from "@reduxjs/toolkit";
+import { RootState } from "@/redux/reducer";
+import { editDataProfile, getDataProfile } from "@/redux/UserSlice";
 interface Props {
   show: boolean;
-  onHide: MouseEventHandler<HTMLButtonElement>;
+  onHide: any;
   functDelete?: MouseEventHandler<HTMLButtonElement>;
 }
 
 interface InitialValues {
   about: string;
 }
-const ModalAbout = ({ show, onHide, functDelete }: Props) => {
+const ModalAbout = ({ show, onHide }: Props) => {
+  const user = useSelector((state: RootState) => state.User);
+  const dispatch: ThunkDispatch<RootState, undefined, AnyAction> =
+    useDispatch();
+  const dataUser = user.dataDetail;
   const initialValues: InitialValues = {
-    about: "",
+    about: dataUser?.about,
   };
   const formik = useFormik({
     initialValues,
-    onSubmit: () => {},
+    onSubmit: async (val) => {
+      const obj = { id: dataUser._id, ...val };
+      await dispatch(editDataProfile(obj));
+      await dispatch(getDataProfile());
+      onHide();
+    },
   });
-
-  console.log(formik.values);
+  console.log({ dataUser, status: user.status });
 
   return show ? (
     <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed  inset-0 z-50 bg-black bg-opacity-40 outline-none focus:outline-none">
@@ -43,8 +54,8 @@ const ModalAbout = ({ show, onHide, functDelete }: Props) => {
             </button>
           </div>
           {/*body*/}
-          <div className="relative p-6 flex-auto">
-            <form action="" className="my-4">
+          <form action="" className="my-4" onSubmit={formik.handleSubmit}>
+            <div className="relative p-6 flex-auto">
               <label htmlFor="" className="">
                 Tell about yourself so employers understand you more easily
               </label>
@@ -55,15 +66,15 @@ const ModalAbout = ({ show, onHide, functDelete }: Props) => {
                 value={formik.values.about}
                 onChange={formik.handleChange}
               />
-            </form>
-          </div>
-          {/*footer*/}
-          <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
-            <BaseButton variant="white" className="mr-4" onClick={onHide}>
-              Cancel
-            </BaseButton>
-            <BaseButton onClick={functDelete}>Submit</BaseButton>
-          </div>
+            </div>
+            {/*footer*/}
+            <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">
+              <BaseButton variant="white" className="mr-4" onClick={onHide}>
+                Cancel
+              </BaseButton>
+              <BaseButton type="submit">Submit</BaseButton>
+            </div>
+          </form>
         </div>
       </div>
     </div>

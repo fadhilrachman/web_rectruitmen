@@ -1,20 +1,33 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ModalAbout from "./Modal/ModalAbout";
 import ModalEducation from "./Modal/ModalEducation";
 import ModalExperience from "./Modal/ModalExperience";
-
+import { useDispatch, useSelector } from "react-redux";
+import { ThunkDispatch, AnyAction } from "@reduxjs/toolkit";
+import { RootState } from "@/redux/reducer";
+import { deleteWorkExperience, getDataProfile } from "@/redux/UserSlice";
+import { convertDate } from "@/utils";
 interface Modal {
   modalAbout: boolean;
   modalExperience: boolean;
   modalEducation: boolean;
 }
 const ProfileInformation = () => {
+  const user = useSelector((state: RootState) => state.User);
+  const dataUser = user.dataDetail;
+  const dispatch: ThunkDispatch<RootState, undefined, AnyAction> =
+    useDispatch();
   const [modal, setModal] = useState<Modal>({
     modalAbout: false,
     modalEducation: false,
     modalExperience: false,
   });
+
+  const handleDeleteWorkExp = async (idWork: string) => {
+    await dispatch(deleteWorkExperience({ id: dataUser._id, idWork }));
+    dispatch(getDataProfile());
+  };
   return (
     <div className="mt-14">
       {/* About */}
@@ -22,22 +35,33 @@ const ProfileInformation = () => {
         <div className="border-b-2 flex justify-between items-center">
           <h1 className="text-[25px] font-semibold ">About Me</h1>
           <span
-            className="text-green-600 underline hover:cursor-pointer"
+            className={`text-green-600 underline hover:cursor-pointer ${
+              !dataUser?.about && "hidden"
+            }`}
             onClick={() => setModal({ ...modal, modalAbout: true })}
           >
             Edit
           </span>
         </div>
-        <p className="mt-5 font-light text-gray-700">
-          As a Front-end developer, I have the ability to design and implement
-          the visual appearance of applications or websites. I use programming
-          languages ​​such as HTML, CSS, and JavaScript to create web pages that
-          are intuitive and easy to use for users. I also have experience
-          working with back-end development teams to ensure that applications or
-          websites work properly and meet user needs. I also constantly strive
-          to improve my skills and learn the latest technology to provide the
-          best results for clients.
-        </p>
+        <div className="mt-5 font-light text-gray-700">
+          {user.status === "loading" ? (
+            <div className="bg-gray-300 animate-pulse h-20 rounded"></div>
+          ) : dataUser.about ? (
+            <p>{dataUser.about}</p>
+          ) : (
+            <div className="text-center">
+              <p className="text-neutral-400">
+                Tell the company what makes you excel to be hired
+              </p>
+              <p
+                className="text-green-600 underline hover:cursor-pointer"
+                onClick={() => setModal({ ...modal, modalAbout: true })}
+              >
+                add a description about you{" "}
+              </p>
+            </div>
+          )}
+        </div>
       </div>
 
       {/* work experience */}
@@ -51,38 +75,67 @@ const ProfileInformation = () => {
             Add Work Experience
           </span>
         </div>
-        <div className="mt-5 flex flex-col md:flex-row justify-between group">
-          <div className="">
-            <h3 className="font-semibold text-[19px]">- Frontend Developer</h3>
-            <h4 className="font-light">Sagara</h4>
-            <div className="font-light text-gray-700 mt-3">
-              <p>Juni 2022 - mei 2022</p>
-              <p>
-                Membuat Dashboard untuk perusahaan ikan menggunakan react js
-                dengan state management redux-sage dan css framework bootstrap
-              </p>
-            </div>
-          </div>
-          <div className="  mt-4 hidden group-hover:block">
-            <span className="text-sky-700 mr-3 underline hover:cursor-pointer ">
-              Edit
-            </span>
-            <span className="text-red-500 underline hover:cursor-pointer ">
-              Delete
-            </span>
-          </div>
-        </div>
-        <div className="mt-5">
-          <h3 className="font-semibold text-[19px]">- Backend Developer</h3>
-          <h4 className="font-light">DOT Indonesia</h4>
-          <div className="font-light text-gray-700 mt-3">
-            <p>Juni 2022 - mei 2022</p>
-            <p>
-              Membuat Dashboard untuk perusahaan ikan menggunakan react js
-              dengan state management redux-sage dan css framework bootstrap
+
+        {user.status === "loading" ? (
+          <>
+            <div className="bg-gray-300 animate-pulse h-20 rounded mt-5"></div>
+            <div className="bg-gray-300 animate-pulse h-20 rounded mt-5"></div>
+          </>
+        ) : dataUser?.work_experience?.length === 0 ? (
+          <div className="text-center mt-5">
+            <p className="text-neutral-400">
+              77.9% of companies consider work experience to be important in
+              applications. So make sure this section is filled in to increase
+              your chances of getting an interview!
+            </p>
+            <p
+              className="text-green-600 underline hover:cursor-pointer"
+              onClick={() => setModal({ ...modal, modalAbout: true })}
+            >
+              Add Work Experience{" "}
             </p>
           </div>
-        </div>
+        ) : (
+          dataUser?.work_experience?.map((val: any, key: number) => {
+            const description: string[] =
+              dataUser &&
+              val?.additional_information
+                ?.split("\n")
+                ?.filter((item: string) => item.trim() !== "");
+            console.log({ description });
+
+            return (
+              <div
+                className="mt-5 flex flex-col md:flex-row justify-between group"
+                key={key}
+              >
+                <div className="">
+                  <h3 className="font-semibold text-[19px]">
+                    - {val?.position}
+                  </h3>
+                  <h4 className="font-light">{val?.company_name}</h4>
+                  <div className="font-light text-gray-700 mt-3">
+                    <p>
+                      {convertDate(val?.end_date)} -{" "}
+                      {convertDate(val?.end_date)}
+                    </p>
+                    {description.map((item: string) => (
+                      <p>{item}</p>
+                    ))}
+                  </div>
+                </div>
+                <div className="  mt-4 hidden group-hover:block">
+                  <span
+                    className="text-red-500 underline hover:cursor-pointer "
+                    onClick={() => handleDeleteWorkExp(val._id)}
+                  >
+                    Delete
+                  </span>
+                </div>
+              </div>
+            );
+          })
+        )}
       </div>
 
       {/* EDUCATION */}
