@@ -37,6 +37,8 @@ const ModalExperience = ({ show, onHide, functDelete }: Props) => {
       additional_information: Yup.string().required("cannot be empty"),
     }),
     onSubmit: () => {},
+    validateOnChange: false, // Tidak memicu validasi saat nilai input berubah
+    validateOnBlur: false,
   });
 
   console.log(formik.errors);
@@ -66,24 +68,18 @@ const ModalExperience = ({ show, onHide, functDelete }: Props) => {
                 className=""
                 name="company_name"
                 onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
                 value={formik.values.company_name}
                 errMessage={formik.errors?.company_name}
-                isInvalid={
-                  !!formik.errors?.company_name && !!formik.touched.company_name
-                }
+                isInvalid={!!formik.errors?.company_name}
               />
               <BaseInput
                 placeholder="position"
                 className="mt-5"
                 name="position"
                 onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
                 value={formik.values.position}
                 errMessage={formik.errors?.position}
-                isInvalid={
-                  !!formik.errors?.position && !!formik.touched.position
-                }
+                isInvalid={!!formik.errors?.position}
               />
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-5">
                 <div>
@@ -94,12 +90,9 @@ const ModalExperience = ({ show, onHide, functDelete }: Props) => {
                     type="date"
                     name="start_date"
                     onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
                     value={formik.values.start_date}
                     errMessage={formik.errors?.start_date}
-                    isInvalid={
-                      !!formik.errors?.start_date && !!formik.touched.start_date
-                    }
+                    isInvalid={!!formik.errors?.start_date}
                   />
                 </div>
                 <div>
@@ -110,12 +103,9 @@ const ModalExperience = ({ show, onHide, functDelete }: Props) => {
                     type="date"
                     name="end_date"
                     onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
                     value={formik.values.end_date}
                     errMessage={formik.errors?.end_date}
-                    isInvalid={
-                      !!formik.errors?.end_date && !!formik.touched.end_date
-                    }
+                    isInvalid={!!formik.errors?.end_date}
                   />
                 </div>
               </div>
@@ -124,13 +114,9 @@ const ModalExperience = ({ show, onHide, functDelete }: Props) => {
                 className="mt-3"
                 name="additional_information"
                 onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
                 value={formik.values.additional_information}
                 errMessage={formik.errors?.additional_information}
-                isInvalid={
-                  !!formik.errors?.additional_information &&
-                  !!formik.touched.additional_information
-                }
+                isInvalid={!!formik.errors?.additional_information}
               />
             </div>
             {/*footer*/}

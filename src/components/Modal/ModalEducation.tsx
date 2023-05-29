@@ -36,6 +36,8 @@ const ModalEducation = ({ show, onHide, functDelete }: Props) => {
       end_date: Yup.string().required("cannot be empty"),
     }),
     onSubmit: () => {},
+    validateOnChange: false, // Tidak memicu validasi saat nilai input berubah
+    validateOnBlur: false,
   });
 
   console.log(formik.errors);
@@ -65,22 +67,18 @@ const ModalEducation = ({ show, onHide, functDelete }: Props) => {
                 className=""
                 name="school_name"
                 onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
                 value={formik.values.school_name}
                 errMessage={formik.errors?.school_name}
-                isInvalid={
-                  !!formik.errors?.school_name && !!formik.touched.school_name
-                }
+                isInvalid={!!formik.errors?.school_name}
               />
               <BaseInput
                 placeholder="major"
                 className="mt-5"
                 name="major"
                 onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
                 value={formik.values.major}
                 errMessage={formik.errors?.major}
-                isInvalid={!!formik.errors?.major && !!formik.touched.major}
+                isInvalid={!!formik.errors?.major}
               />
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mt-5">
                 <div>
@@ -91,12 +89,9 @@ const ModalEducation = ({ show, onHide, functDelete }: Props) => {
                     type="date"
                     name="start_date"
                     onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
                     value={formik.values.start_date}
                     errMessage={formik.errors?.start_date}
-                    isInvalid={
-                      !!formik.errors?.start_date && !!formik.touched.start_date
-                    }
+                    isInvalid={!!formik.errors?.start_date}
                   />
                 </div>
                 <div>
@@ -107,12 +102,9 @@ const ModalEducation = ({ show, onHide, functDelete }: Props) => {
                     type="date"
                     name="end_date"
                     onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
                     value={formik.values.end_date}
                     errMessage={formik.errors?.end_date}
-                    isInvalid={
-                      !!formik.errors?.end_date && !!formik.touched.end_date
-                    }
+                    isInvalid={!!formik.errors?.end_date}
                   />
                 </div>
               </div>

@@ -25,13 +25,27 @@ export default function Home() {
   const dispatch: ThunkDispatch<RootState, undefined, AnyAction> =
     useDispatch();
   const kerja = useSelector((state: RootState) => state.Job);
-  const dataJob = kerja.data;
+  const dataJob = kerja.data.data;
+  const totalPage = kerja.data.total_page;
   const [param, setParam] = useState<QueryParam>({
     search: "",
+    page: 1,
   });
+  const [pagination, setPagination] = useState<number[]>([]);
+
   useEffect(() => {
+    const newPagination: number[] = [];
     dispatch(getDataJob(param));
+    console.log({ totalPage });
+
+    for (let i = 0; i < totalPage; i++) {
+      newPagination.push(i + 1);
+      console.log({ i });
+    }
+    setPagination(newPagination);
   }, [dispatch, param]);
+
+  console.log({ pagination });
 
   const workEnv: WorkEnv[] = [
     {
@@ -97,7 +111,6 @@ export default function Home() {
       level: "INTEMADIATE",
     },
   ];
-  const pagination: number[] = [1, 2, 3, 4, 5, 6];
   return (
     <main className="">
       <div className="flex flex-col justify-between border min-h-screen pb-20 px-10 bg-green-600 text-white">
@@ -146,18 +159,14 @@ export default function Home() {
               type="text"
               placeholder="Search job.."
               className="bg-white mb-5 focus:outline-none py-2 px-3"
-              onChange={(e) => setParam({ search: e.target.value })}
+              onChange={(e) => setParam({ ...param, search: e.target.value })}
             />
             <button className="bg-green-600 px-3 py-2 text-white">
               Search
             </button>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-            {dataJob.length === 0 ? (
-              <div className="my-12 col-start-2 text-center">
-                job yang anda cari tidak ada
-              </div>
-            ) : kerja.status === "loading" ? (
+            {kerja.status === "loading" ? (
               <div role="status" className="col-start-2  text-center my-10">
                 <svg
                   aria-hidden="true"
@@ -176,8 +185,12 @@ export default function Home() {
                 </svg>
                 <span className="sr-only">Loading...</span>
               </div>
+            ) : dataJob?.length === 0 ? (
+              <div className="my-12 col-start-2 text-center">
+                job yang anda cari tidak ada
+              </div>
             ) : (
-              dataJob.map((val: any, key: number) => {
+              dataJob?.map((val: any, key: number) => {
                 return (
                   <div className="bg-white px-5 py-4 " key={key}>
                     <h3>{val.job_name}</h3>
@@ -185,7 +198,7 @@ export default function Home() {
                       {val.level}
                     </p>
                     <Link
-                      href="/job"
+                      href={`/job/${val._id}`}
                       className="text-green-600 text-sm font-bold"
                     >
                       APPLY
@@ -199,7 +212,9 @@ export default function Home() {
             {pagination.map((val, key) => {
               return (
                 <div
-                  className="border bg-white w-10 h-10 shadow rounded-full flex justify-center items-center text-green-600 mr-2 hover:cursor-pointer"
+                  className={`border bg-white w-10 h-10 shadow rounded-full flex justify-center items-center ${
+                    val === param.page && "text-green-600"
+                  } mr-2 hover:cursor-pointer`}
                   key={key}
                 >
                   {val}
