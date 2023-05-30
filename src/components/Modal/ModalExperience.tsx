@@ -8,11 +8,8 @@ import BaseInput from "../BaseInput";
 import { useDispatch, useSelector } from "react-redux";
 import { ThunkDispatch, AnyAction } from "@reduxjs/toolkit";
 import { RootState } from "@/redux/reducer";
-import {
-  createWork_experience,
-  editDataProfile,
-  getDataProfile,
-} from "@/redux/UserSlice";
+import toast from "react-hot-toast";
+import { createWork_experience, getDataProfile } from "@/redux/UserSlice";
 interface Props {
   show: boolean;
   onHide: any;
@@ -53,6 +50,7 @@ const ModalExperience = ({ show, onHide, functDelete }: Props) => {
 
       await dispatch(createWork_experience(obj));
       await dispatch(getDataProfile());
+      toast.success("updated success");
       formik.resetForm();
       onHide();
     },

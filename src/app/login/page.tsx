@@ -34,6 +34,7 @@ const pages = () => {
     }),
     onSubmit: async (val: Login) => {
       await dispatch(login(val));
+      
     },
     validateOnChange: false, // Tidak memicu validasi saat nilai input berubah
     validateOnBlur: false,

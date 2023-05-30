@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ThunkDispatch, AnyAction } from "@reduxjs/toolkit";
 import { RootState } from "@/redux/reducer";
 import { editDataProfile, getDataProfile } from "@/redux/UserSlice";
+import toast from "react-hot-toast";
 interface Props {
   show: boolean;
   onHide: any;
@@ -31,6 +32,8 @@ const ModalAbout = ({ show, onHide }: Props) => {
       const obj = { id: dataUser._id, ...val };
       await dispatch(editDataProfile(obj));
       await dispatch(getDataProfile());
+      toast.success("updated success");
+
       onHide();
     },
   });

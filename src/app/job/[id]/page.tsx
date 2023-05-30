@@ -7,6 +7,7 @@ import { RootState } from "@/redux/reducer";
 import { getDataJob, getDetailJob } from "@/redux/jobSlice";
 import { ThunkDispatch, AnyAction } from "@reduxjs/toolkit";
 import ModalApplication from "@/components/Modal/ModalApplication";
+import toast, { Toaster } from "react-hot-toast";
 
 const index = ({ params }: { params: { id: string } }) => {
   const { id } = params;
@@ -18,10 +19,7 @@ const index = ({ params }: { params: { id: string } }) => {
   useEffect(() => {
     dispatch(getDetailJob({ id }));
   }, []);
-  console.log({ dataJob });
 
-  const description: string =
-    "Supervising projects to run smoothly according to plan (time, budget, and scope)\n Engaging in Requirement Gathering\n Developing and monitoring Project Plan\n Preparing reports for Stakeholders (clients & project directors)\n Providing direction and support to Developer Team\n Conducting project evaluations for employees, vendors, or freelancers\n Coordinating with Finance, Legal, Human Capital, and Engineering Team\n";
   const descriptionArray: string[] =
     dataJob &&
     dataJob?.job_description
@@ -90,6 +88,7 @@ const index = ({ params }: { params: { id: string } }) => {
         show={modal}
         onHide={() => setModal(false)}
       />
+      <Toaster position="top-right" />
     </div>
   );
 };

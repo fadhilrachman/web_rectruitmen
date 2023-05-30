@@ -123,7 +123,6 @@ const ModalApplication = ({ show, onHide, functDelete, id }: Props) => {
           {/*header*/}
         </div>
       </div>
-      <Toaster position="top-right" reverseOrder={false} />
     </div>
   ) : null;
 };

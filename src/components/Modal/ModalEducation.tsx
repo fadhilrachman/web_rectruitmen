@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ThunkDispatch, AnyAction } from "@reduxjs/toolkit";
 import { RootState } from "@/redux/reducer";
 import { createEducation, getDataProfile } from "@/redux/UserSlice";
+import toast from "react-hot-toast";
 
 interface Props {
   show: boolean;
@@ -46,6 +47,8 @@ const ModalEducation = ({ show, onHide, functDelete }: Props) => {
     onSubmit: async (val) => {
       await dispatch(createEducation({ ...val, id: dataUser._id }));
       await dispatch(getDataProfile());
+      toast.success("updated success");
+
       formik.resetForm();
       onHide();
     },

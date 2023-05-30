@@ -18,7 +18,6 @@ const Application = () => {
       dispatch(getDataApplication({ user: dataUser._id }));
     }
   }, []);
-  console.log({ application });
 
   return (
     <div className="mt-14">
@@ -32,7 +31,11 @@ const Application = () => {
       ) : (
         dataApplication?.map((val: any, key: number) => {
           return (
-            <div className="border mt-5 px-5 py-4f flex flex-col sm:flex-row justify-between py-4">
+            <div
+              className={`border mt-5 px-5 py-4f flex flex-col sm:flex-row justify-between py-4 ${
+                val?.notes && "opacity-70"
+              }`}
+            >
               <div>
                 <h1 className="text-2xl font-semibold">{`${val?.job.job_name}(${val?.job.level})`}</h1>
                 <div className="text-neutral-400  ">
@@ -46,8 +49,7 @@ const Application = () => {
                 </div>
                 {val?.notes && (
                   <div className="mt-4 text-sm text-red-500 italic">
-                    Notes: Lorem ipsum dolor sit amet consectetur adipisicing
-                    elit. Ut, distinctio.
+                    {val.notes}
                   </div>
                 )}
               </div>

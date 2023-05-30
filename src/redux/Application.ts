@@ -7,11 +7,12 @@ export const getDataJob = createAsyncThunk("/application", async () => {
   return result;
 });
 
-export const getDetailApplication = createAsyncThunk(
-  "/application-detail",
-  async (param: { id: string }) => {
-    const result = await axios.get(
-      `http://localhost:4000/application/${param.id}`
+export const updateDataApplication = createAsyncThunk(
+  "/application-update",
+  async (param: { status: string; notes: string; id: string }) => {
+    const result = await axios.put(
+      `http://localhost:4000/application/${param.id}`,
+      { notes: param.notes, status: param.status }
     );
     return result;
   }
@@ -54,14 +55,13 @@ const Application = createSlice({
     builder.addCase(getDataApplication.rejected, (state) => {
       state.status = "error";
     });
-    builder.addCase(getDetailApplication.pending, (state) => {
+    builder.addCase(updateDataApplication.pending, (state) => {
       state.status = "loading";
     });
-    builder.addCase(getDetailApplication.fulfilled, (state, action) => {
+    builder.addCase(updateDataApplication.fulfilled, (state) => {
       state.status = "succes";
-      state.dataDetail = action.payload.data;
     });
-    builder.addCase(getDetailApplication.rejected, (state) => {
+    builder.addCase(updateDataApplication.rejected, (state) => {
       state.status = "error";
     });
     builder.addCase(createApplication.pending, (state) => {

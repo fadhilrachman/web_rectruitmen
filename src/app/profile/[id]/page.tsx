@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ThunkDispatch, AnyAction } from "@reduxjs/toolkit";
 import { RootState } from "@/redux/reducer";
 import Admin from "@/components/profile/Admin.";
+import toast, { Toaster } from "react-hot-toast";
 
 const page = ({ params }: { params: { id: string } }) => {
   const user = useSelector((state: RootState) => state.User);
@@ -26,7 +27,7 @@ const page = ({ params }: { params: { id: string } }) => {
       tabComp = <ProfileInformation />;
       break;
     case "Application":
-      tabComp = <ProfileInformation />;
+      tabComp = <Application />;
       break;
     case "Admin":
       tabComp = <Admin />;
@@ -60,6 +61,7 @@ const page = ({ params }: { params: { id: string } }) => {
           {tabComp}
         </div>
       </div>
+      <Toaster position="top-right" />
     </div>
   );
 };
