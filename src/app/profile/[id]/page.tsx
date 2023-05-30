@@ -1,13 +1,40 @@
 "use client";
 import React, { useState } from "react";
 import Navbar from "@/components/Navbar";
-import ProfileInformation from "@/components/ProfileInformation";
-import Application from "@/components/Application";
+import ProfileInformation from "@/components/profile/ProfileInformation";
+import Application from "@/components/profile/Application";
 import Link from "next/link";
+import { useDispatch, useSelector } from "react-redux";
+import { ThunkDispatch, AnyAction } from "@reduxjs/toolkit";
+import { RootState } from "@/redux/reducer";
+import Admin from "@/components/profile/Admin.";
 
 const page = ({ params }: { params: { id: string } }) => {
+  const user = useSelector((state: RootState) => state.User);
+  const dispatch: ThunkDispatch<RootState, undefined, AnyAction> =
+    useDispatch();
+  const dataUser = user.dataDetail;
   const [tab, setTab] = useState<string>("Profile Inofmation");
-  const tabs: string[] = ["Profile Inofmation", "Application"];
+  const tabs: string[] = [
+    "Profile Inofmation",
+    dataUser?.is_admin ? "Admin" : "Application",
+  ];
+  let tabComp: any;
+
+  switch (tab) {
+    case "Profile Inofmation":
+      tabComp = <ProfileInformation />;
+      break;
+    case "Application":
+      tabComp = <ProfileInformation />;
+      break;
+    case "Admin":
+      tabComp = <Admin />;
+      break;
+    default:
+      break;
+  }
+
   return (
     <div className="">
       <Navbar />
@@ -30,11 +57,7 @@ const page = ({ params }: { params: { id: string } }) => {
               );
             })}
           </div>
-          {tab === "Profile Inofmation" ? (
-            <ProfileInformation />
-          ) : (
-            <Application />
-          )}
+          {tabComp}
         </div>
       </div>
     </div>

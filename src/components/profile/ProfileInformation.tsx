@@ -1,12 +1,16 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import ModalAbout from "./Modal/ModalAbout";
-import ModalEducation from "./Modal/ModalEducation";
-import ModalExperience from "./Modal/ModalExperience";
+import ModalAbout from "../Modal/ModalAbout";
+import ModalEducation from "../Modal/ModalEducation";
+import ModalExperience from "../Modal/ModalExperience";
 import { useDispatch, useSelector } from "react-redux";
 import { ThunkDispatch, AnyAction } from "@reduxjs/toolkit";
 import { RootState } from "@/redux/reducer";
-import { deleteWorkExperience, getDataProfile } from "@/redux/UserSlice";
+import {
+  deleteEducation,
+  deleteWorkExperience,
+  getDataProfile,
+} from "@/redux/UserSlice";
 import { convertDate } from "@/utils";
 interface Modal {
   modalAbout: boolean;
@@ -26,6 +30,10 @@ const ProfileInformation = () => {
 
   const handleDeleteWorkExp = async (idWork: string) => {
     await dispatch(deleteWorkExperience({ id: dataUser._id, idWork }));
+    dispatch(getDataProfile());
+  };
+  const handleDeleteEducation = async (idEducation: string) => {
+    await dispatch(deleteEducation({ id: dataUser._id, idEducation }));
     dispatch(getDataProfile());
   };
   return (
@@ -149,34 +157,65 @@ const ProfileInformation = () => {
             Add Education
           </span>
         </div>
-        <div className="mt-5 flex flex-col md:flex-row justify-between group">
-          <div>
-            <h3 className="font-semibold text-[19px]">- SMK 2 Garut</h3>
-            <h4 className="font-light">Jurusan IPA</h4>
-            <p className="font-light text-gray-700 mt-3">
-              {" "}
-              Juni 2022 - mei 2022
+        {user.status === "loading" ? (
+          <>
+            <div className="bg-gray-300 animate-pulse h-20 rounded mt-5"></div>
+            <div className="bg-gray-300 animate-pulse h-20 rounded mt-5"></div>
+          </>
+        ) : dataUser?.education?.length === 0 ? (
+          <div className="text-center mt-5">
+            <p className="text-neutral-400">
+              Your background is seen by the company. Tell us about your
+              educational background to get 23% more interviews.
+            </p>
+            <p
+              className="text-green-600 underline hover:cursor-pointer"
+              onClick={() => setModal({ ...modal, modalEducation: true })}
+            >
+              Add Eduction{" "}
             </p>
           </div>
-          <div className=" mt-4 hidden group-hover:block">
-            <span className="text-sky-700 mr-3 underline hover:cursor-pointer ">
-              Edit
-            </span>
-            <span className="text-red-500 underline hover:cursor-pointer ">
-              Delete
-            </span>
-          </div>
-        </div>
-        <div className="mt-5">
-          <h3 className="font-semibold text-[19px]">- SMK 2 Garut</h3>
-          <h4 className="font-light">Jurusan IPA</h4>
-          <p className="font-light text-gray-700 mt-3"> Juni 2022 - mei 2022</p>
-        </div>
-        <div className="mt-5">
-          <h3 className="font-semibold text-[19px]">- SMK 2 Garut</h3>
-          <h4 className="font-light">Jurusan IPA</h4>
-          <p className="font-light text-gray-700 mt-3"> Juni 2022 - mei 2022</p>
-        </div>
+        ) : (
+          dataUser?.education?.map((val: any, key: number) => {
+            const description: string[] =
+              !!val?.additional_information === true &&
+              val?.additional_information
+                ?.split("\n")
+                ?.filter((item: string) => item.trim() !== "");
+            console.log({ description });
+
+            return (
+              <div
+                className="mt-5 flex flex-col md:flex-row justify-between group"
+                key={key}
+              >
+                <div className="">
+                  <h3 className="font-semibold text-[19px]">
+                    - {val?.school_name}
+                  </h3>
+                  <h4 className="font-light">{val?.major}</h4>
+                  <div className="font-light text-gray-700 mt-3">
+                    <p>
+                      {convertDate(val?.end_date)} -{" "}
+                      {convertDate(val?.end_date)}
+                    </p>
+                    {!!val?.additional_information === true
+                      ? description.map((item: string) => <p>{item}</p>)
+                      : ""}
+                  </div>
+                </div>
+                <div className="  mt-4 hidden group-hover:block">
+                  <span
+                    className="text-red-500 underline hover:cursor-pointer "
+                    onClick={() => handleDeleteEducation(val._id)}
+                  >
+                    Delete
+                  </span>
+                </div>
+              </div>
+            );
+          })
+        )}
       </div>
       <ModalAbout
         show={modal.modalAbout}

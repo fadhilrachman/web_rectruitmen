@@ -16,9 +16,18 @@ export const getDetailApplication = createAsyncThunk(
     return result;
   }
 );
+export const getDataApplication = createAsyncThunk(
+  "/application",
+  async (param: { user?: string }) => {
+    const result = await axios.get(
+      `http://localhost:4000/application?user=${param.user}`
+    );
+    return result;
+  }
+);
 export const createApplication = createAsyncThunk(
   "/application-create",
-  async (param: RequestBodyApplication) => {
+  async (param: any) => {
     const result = await axios.post(`http://localhost:4000/application`, param);
     return result;
   }
@@ -35,6 +44,16 @@ const Application = createSlice({
   initialState,
   reducers: {},
   extraReducers(builder) {
+    builder.addCase(getDataApplication.pending, (state) => {
+      state.status = "loading";
+    });
+    builder.addCase(getDataApplication.fulfilled, (state, action) => {
+      state.status = "succes";
+      state.data = action.payload.data;
+    });
+    builder.addCase(getDataApplication.rejected, (state) => {
+      state.status = "error";
+    });
     builder.addCase(getDetailApplication.pending, (state) => {
       state.status = "loading";
     });

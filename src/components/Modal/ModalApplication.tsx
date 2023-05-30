@@ -6,28 +6,47 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { getToken } from "@/utils";
 import Link from "next/link";
-
+import { useDispatch, useSelector } from "react-redux";
+import { ThunkDispatch, AnyAction } from "@reduxjs/toolkit";
+import { RootState } from "@/redux/reducer";
+import { createApplication } from "@/redux/Application";
+import toast, { Toaster } from "react-hot-toast";
 interface Props {
   show: boolean;
-  onHide: MouseEventHandler<HTMLButtonElement>;
+  onHide: any;
   functDelete?: MouseEventHandler<HTMLButtonElement>;
   id?: string;
 }
 
 interface InitialValues {
-  about: string;
+  cover_latter: string;
 }
 const ModalApplication = ({ show, onHide, functDelete, id }: Props) => {
   const token = getToken();
+  const user = useSelector((state: RootState) => state.User);
+  const dispatch: ThunkDispatch<RootState, undefined, AnyAction> =
+    useDispatch();
+
+  const dataUser = user.dataDetail;
   const initialValues: InitialValues = {
-    about: "",
+    cover_latter: "",
   };
   const formik = useFormik({
     initialValues,
     validationSchema: Yup.object({
-      about: Yup.string().required("cannot be empty"),
+      cover_latter: Yup.string().required("cannot be empty"),
     }),
-    onSubmit: () => {},
+    onSubmit: async (val) => {
+      const obj = {
+        user: dataUser._id,
+        status: "in review",
+        cover_latter: val.cover_latter,
+        job: id,
+      };
+      await dispatch(createApplication(obj));
+      await toast.success("successfully submitted application");
+      onHide();
+    },
     validateOnChange: false, // Tidak memicu validasi saat nilai input berubah
     validateOnBlur: false,
   });
@@ -66,11 +85,11 @@ const ModalApplication = ({ show, onHide, functDelete, id }: Props) => {
                   <TextArea
                     placeholder=" cover latter......"
                     className="mt-3"
-                    name="about"
-                    value={formik.values.about}
+                    name="cover_latter"
+                    value={formik.values.cover_latter}
                     onChange={formik.handleChange}
-                    isInvalid={!!formik.errors.about}
-                    errMessage={formik.errors.about}
+                    isInvalid={!!formik.errors.cover_latter}
+                    errMessage={formik.errors.cover_latter}
                   />
                 </div>
                 {/*footer*/}
@@ -104,6 +123,7 @@ const ModalApplication = ({ show, onHide, functDelete, id }: Props) => {
           {/*header*/}
         </div>
       </div>
+      <Toaster position="top-right" reverseOrder={false} />
     </div>
   ) : null;
 };

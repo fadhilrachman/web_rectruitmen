@@ -77,6 +77,34 @@ export const deleteWorkExperience = createAsyncThunk(
     return result;
   }
 );
+export const createEducation = createAsyncThunk(
+  "/profile-education",
+  async (param: any) => {
+    const token = getToken();
+    const result = await axios.put(
+      `http://localhost:4000/education/${param.id}`,
+      param,
+      {
+        headers: { Authorization: token },
+      }
+    );
+    return result;
+  }
+);
+export const deleteEducation = createAsyncThunk(
+  "/profile-education-delete",
+  async (param: any) => {
+    const token = getToken();
+    const result = await axios.put(
+      `http://localhost:4000/education/delete/${param.id}`,
+      param,
+      {
+        headers: { Authorization: token },
+      }
+    );
+    return result;
+  }
+);
 const initialState: {
   status: string;
   statusLogin: string;
@@ -153,6 +181,24 @@ const jobSlice = createSlice({
       state.status = "success";
     });
     builder.addCase(deleteWorkExperience.rejected, (state) => {
+      state.status = "error";
+    });
+    builder.addCase(createEducation.pending, (state) => {
+      state.status = "loading";
+    });
+    builder.addCase(createEducation.fulfilled, (state) => {
+      state.status = "success";
+    });
+    builder.addCase(createEducation.rejected, (state) => {
+      state.status = "error";
+    });
+    builder.addCase(deleteEducation.pending, (state) => {
+      state.status = "loading";
+    });
+    builder.addCase(deleteEducation.fulfilled, (state) => {
+      state.status = "success";
+    });
+    builder.addCase(deleteEducation.rejected, (state) => {
       state.status = "error";
     });
   },

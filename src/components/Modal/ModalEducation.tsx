@@ -5,10 +5,14 @@ import TextArea from "../TextArea";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import BaseInput from "../BaseInput";
+import { useDispatch, useSelector } from "react-redux";
+import { ThunkDispatch, AnyAction } from "@reduxjs/toolkit";
+import { RootState } from "@/redux/reducer";
+import { createEducation, getDataProfile } from "@/redux/UserSlice";
 
 interface Props {
   show: boolean;
-  onHide: MouseEventHandler<HTMLButtonElement>;
+  onHide: any;
   functDelete?: MouseEventHandler<HTMLButtonElement>;
 }
 
@@ -20,6 +24,10 @@ interface InitialValues {
   additional_information: string;
 }
 const ModalEducation = ({ show, onHide, functDelete }: Props) => {
+  const user = useSelector((state: RootState) => state.User);
+  const dispatch: ThunkDispatch<RootState, undefined, AnyAction> =
+    useDispatch();
+  const dataUser = user.dataDetail;
   const initialValues: InitialValues = {
     school_name: "",
     major: "",
@@ -35,7 +43,12 @@ const ModalEducation = ({ show, onHide, functDelete }: Props) => {
       start_date: Yup.string().required("cannot be empty"),
       end_date: Yup.string().required("cannot be empty"),
     }),
-    onSubmit: () => {},
+    onSubmit: async (val) => {
+      await dispatch(createEducation({ ...val, id: dataUser._id }));
+      await dispatch(getDataProfile());
+      formik.resetForm();
+      onHide();
+    },
   });
 
   console.log(formik.errors);
