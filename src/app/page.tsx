@@ -216,7 +216,7 @@ export default function Home() {
         </div>
       </div>
       <div className="px-10 py-10 text-neutral-500">
-        <div>Follow us</div>
+        <div>Created by Muhammad Fadhil Rahman</div>
       </div>
     </main>
   );
