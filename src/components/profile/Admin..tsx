@@ -22,7 +22,8 @@ const Admin = () => {
     if (dataUser._id) {
       dispatch(getDataApplication({ user: "" }));
     }
-  }, []);
+  }, [dataUser]);
+  console.log({ application });
 
   return (
     <div className="mt-8">

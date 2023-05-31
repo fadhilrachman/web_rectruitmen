@@ -1,6 +1,9 @@
 "use client";
+import { getToken } from "@/utils";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+
+const token = getToken();
 export const getDataJob = createAsyncThunk("/application", async () => {
   const result = await axios.get(`http://localhost:4000/application`);
   return result;
@@ -11,7 +14,8 @@ export const updateDataApplication = createAsyncThunk(
   async (param: { status: string; notes: string; id: string }) => {
     const result = await axios.put(
       `http://localhost:4000/application/${param.id}`,
-      { notes: param.notes, status: param.status }
+      { notes: param.notes, status: param.status },
+      { headers: { Authorization: token } }
     );
     return result;
   }
@@ -20,7 +24,8 @@ export const getDataApplication = createAsyncThunk(
   "/application",
   async (param: { user?: string }) => {
     const result = await axios.get(
-      `http://localhost:4000/application?user=${param.user}`
+      `http://localhost:4000/application?user=${param.user}`,
+      { headers: { Authorization: token } }
     );
     return result;
   }
@@ -28,7 +33,11 @@ export const getDataApplication = createAsyncThunk(
 export const createApplication = createAsyncThunk(
   "/application-create",
   async (param: any) => {
-    const result = await axios.post(`http://localhost:4000/application`, param);
+    const result = await axios.post(
+      `http://localhost:4000/application`,
+      param,
+      { headers: { Authorization: token } }
+    );
     return result;
   }
 );

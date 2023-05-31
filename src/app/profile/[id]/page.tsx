@@ -11,15 +11,15 @@ import toast, { Toaster } from "react-hot-toast";
 
 const page = ({ params }: { params: { id: string } }) => {
   const user = useSelector((state: RootState) => state.User);
-  const dispatch: ThunkDispatch<RootState, undefined, AnyAction> =
-    useDispatch();
   const dataUser = user.dataDetail;
-  const [tab, setTab] = useState<string>("Profile Inofmation");
-  const tabs: string[] = [
-    "Profile Inofmation",
-    dataUser?.is_admin ? "Admin" : "Application",
-  ];
+  const [tab, setTab] = useState<string>(
+    dataUser && dataUser?.is_admin ? "Admin" : "Profile Inofmation"
+  );
+  const tabs: string[] = dataUser?.is_admin
+    ? ["Admin"]
+    : ["Profile Inofmation", "Application"];
   let tabComp: any;
+  console.log({ tabs, tab });
 
   switch (tab) {
     case "Profile Inofmation":
@@ -30,8 +30,6 @@ const page = ({ params }: { params: { id: string } }) => {
       break;
     case "Admin":
       tabComp = <Admin />;
-      break;
-    default:
       break;
   }
 
