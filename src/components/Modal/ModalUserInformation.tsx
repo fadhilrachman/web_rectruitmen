@@ -6,8 +6,8 @@ import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { ThunkDispatch, AnyAction } from "@reduxjs/toolkit";
 import { RootState } from "@/redux/reducer";
-import { updateDataApplication } from "@/redux/Application";
-import toast, { Toaster } from "react-hot-toast";
+import { getDataApplication, updateDataApplication } from "@/redux/Application";
+import toast from "react-hot-toast";
 import { convertDate } from "@/utils";
 interface Props {
   show: boolean;
@@ -20,9 +20,9 @@ interface InitialValues {
   notes: string;
 }
 const ModalUserInformation = ({ show, onHide, data }: Props) => {
-  const user = useSelector((state: RootState) => state.User);
   const dispatch: ThunkDispatch<RootState, undefined, AnyAction> =
     useDispatch();
+
   const initialValues: InitialValues = {
     status: data.status,
     notes: "",
@@ -31,12 +31,12 @@ const ModalUserInformation = ({ show, onHide, data }: Props) => {
     initialValues,
     onSubmit: async (val) => {
       await dispatch(updateDataApplication({ ...val, id: data._id }));
+      await dispatch(getDataApplication({ user: "" }));
       formik.resetForm();
       toast.success("updated success");
       onHide();
     },
   });
-  console.log({ data });
 
   return show ? (
     <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed  inset-0 z-50 bg-black bg-opacity-40 outline-none focus:outline-none">
@@ -61,7 +61,7 @@ const ModalUserInformation = ({ show, onHide, data }: Props) => {
             <div className="p-5 overflow-y-auto max-h-[400px]">
               <div className="mb-5 flex justify-between">
                 <h1 className="text-2xl font-semibold">Status application</h1>
-                <h3>In review</h3>
+                <h3>{data.status}</h3>
               </div>
               <h1 className="text-1xl ">{data.user.email}</h1>
               <div>

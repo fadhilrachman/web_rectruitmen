@@ -41,7 +41,10 @@ const index = ({ params }: { params: { id: string } }) => {
         ) : (
           <div className="col-span-2">
             <div className="border-b-2 border-green-600 pb-2 ">
-              <h1 className="text-3xl text-green-600 ">{dataJob.job_name}</h1>
+              <h1 className="text-3xl text-green-600 ">
+                {dataJob.job_name}{" "}
+                <span className="text-neutral-300">- {dataJob?.category}</span>{" "}
+              </h1>
             </div>
             <div className="flex justify-between">
               <h3 className="text-gray-400 text-[15px] mt-4">

@@ -40,7 +40,7 @@ const pages = () => {
     }),
     onSubmit: async (val: Register) => {
       console.log(val);
-      dispatch(register(val));
+      await dispatch(register(val));
     },
   });
   useEffect(() => {
@@ -50,7 +50,7 @@ const pages = () => {
           duration: 1000,
         });
       }
-      if (user.statusRegister === "succes") {
+      if (user.statusRegister === "success") {
         toast.success("register success", {
           duration: 1000,
         });
@@ -58,7 +58,6 @@ const pages = () => {
       }
     }
   }, [user.statusRegister]);
-  console.log(user.statusRegister);
 
   return (
     <div className="h-screen flex justify-center items-center  ">

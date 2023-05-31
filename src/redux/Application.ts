@@ -1,7 +1,6 @@
 "use client";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import RequestBodyApplication from "@/utils/interfaces/application";
 export const getDataJob = createAsyncThunk("/application", async () => {
   const result = await axios.get(`http://localhost:4000/application`);
   return result;

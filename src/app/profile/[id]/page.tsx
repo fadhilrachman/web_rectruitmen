@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import Navbar from "@/components/Navbar";
 import ProfileInformation from "@/components/profile/ProfileInformation";
 import Application from "@/components/profile/Application";
-import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { ThunkDispatch, AnyAction } from "@reduxjs/toolkit";
 import { RootState } from "@/redux/reducer";
@@ -40,7 +39,7 @@ const page = ({ params }: { params: { id: string } }) => {
     <div className="">
       <Navbar />
       <div className=" px-5 md:px-10 py-10 xl:w-10/12">
-        <h1 className="text-3xl font-bold">Fadhil Rahman</h1>
+        <h1 className="text-3xl font-bold">{dataUser?.username}</h1>
 
         <div className="mt-5">
           <div className="text-[19px] text-neutral-500 flex">

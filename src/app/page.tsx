@@ -27,25 +27,19 @@ export default function Home() {
   const kerja = useSelector((state: RootState) => state.Job);
   const dataJob = kerja.data.data;
   const totalPage = kerja.data.total_page;
+  const paginationArray = Array.from(
+    { length: totalPage },
+    (_, index) => index + 1
+  );
   const [param, setParam] = useState<QueryParam>({
     search: "",
     page: 1,
   });
-  const [pagination, setPagination] = useState<number[]>([]);
 
   useEffect(() => {
-    const newPagination: number[] = [];
     dispatch(getDataJob(param));
     console.log({ totalPage });
-
-    for (let i = 0; i < totalPage; i++) {
-      newPagination.push(i + 1);
-      console.log({ i });
-    }
-    setPagination(newPagination);
   }, [dispatch, param]);
-
-  console.log({ pagination });
 
   const workEnv: WorkEnv[] = [
     {
@@ -123,7 +117,6 @@ export default function Home() {
             We invite the best talents to collaborate with us in challenging
             projects from all around the world
           </h3>
-          <button className="border px-12 py-4">Find Job Position</button>
         </div>
       </div>
       <div className="text-center py-10 border px-10">
@@ -158,12 +151,9 @@ export default function Home() {
             <input
               type="text"
               placeholder="Search job.."
-              className="bg-white mb-5 focus:outline-none py-2 px-3"
+              className="bg-white mb-5 focus:outline-none py-2 px-3 w-full sm:w-min"
               onChange={(e) => setParam({ ...param, search: e.target.value })}
             />
-            <button className="bg-green-600 px-3 py-2 text-white">
-              Search
-            </button>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
             {kerja.status === "loading" ? (
@@ -209,13 +199,14 @@ export default function Home() {
             )}
           </div>
           <div className=" mt-2 flex">
-            {pagination.map((val, key) => {
+            {paginationArray.map((val, key) => {
               return (
                 <div
                   className={`border bg-white w-10 h-10 shadow rounded-full flex justify-center items-center ${
                     val === param.page && "text-green-600"
                   } mr-2 hover:cursor-pointer`}
                   key={key}
+                  onClick={() => setParam({ ...param, page: val })}
                 >
                   {val}
                 </div>
