@@ -7,7 +7,7 @@ export const getDataJob = createAsyncThunk(
   "/job",
   async (param: QueryParam) => {
     const result = await axios.get(
-      `http://localhost:4000/job?search=${param?.search}&page=${param.page}`
+      `${process.env.NEXT_API_URL}/job?search=${param?.search}&page=${param.page}`
     );
     return result;
   }
@@ -16,7 +16,9 @@ export const getDataJob = createAsyncThunk(
 export const getDetailJob = createAsyncThunk(
   "/job-detail",
   async (param: { id: string }) => {
-    const result = await axios.get(`http://localhost:4000/job/${param.id}`);
+    const result = await axios.get(
+      `${process.env.NEXT_API_URL}/job/${param.id}`
+    );
     return result;
   }
 );

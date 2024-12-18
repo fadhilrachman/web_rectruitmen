@@ -8,7 +8,10 @@ export const register = createAsyncThunk(
   "/register",
   async (param: Register, { rejectWithValue }) => {
     try {
-      const result = await axios.post(`http://localhost:4000/register`, param);
+      const result = await axios.post(
+        `${process.env.NEXT_API_URL}/register`,
+        param
+      );
       return result;
     } catch (error: any) {
       return rejectWithValue(error.response.data.message);
@@ -19,7 +22,10 @@ export const login = createAsyncThunk(
   "/login",
   async (param: Login, { rejectWithValue }) => {
     try {
-      const result = await axios.post(`http://localhost:4000/login`, param);
+      const result = await axios.post(
+        `${process.env.NEXT_API_URL}/login`,
+        param
+      );
       return result;
     } catch (error: any) {
       return rejectWithValue(error.response.data.message);
@@ -29,7 +35,7 @@ export const login = createAsyncThunk(
 
 export const getDataProfile = createAsyncThunk("/profile", async () => {
   const token = getToken();
-  const result = await axios.get(`http://localhost:4000/profile`, {
+  const result = await axios.get(`${process.env.NEXT_API_URL}/profile`, {
     headers: { Authorization: token },
   });
   return result;
@@ -40,7 +46,7 @@ export const editDataProfile = createAsyncThunk(
   async (param: EditProfile) => {
     const token = getToken();
     const result = await axios.put(
-      `http://localhost:4000/profile/${param.id}`,
+      `${process.env.NEXT_API_URL}/profile/${param.id}`,
       param,
       {
         headers: { Authorization: token },
@@ -54,7 +60,7 @@ export const createWork_experience = createAsyncThunk(
   async (param: any) => {
     const token = getToken();
     const result = await axios.put(
-      `http://localhost:4000/work/${param.id}`,
+      `${process.env.NEXT_API_URL}/work/${param.id}`,
       param,
       {
         headers: { Authorization: token },
@@ -68,7 +74,7 @@ export const deleteWorkExperience = createAsyncThunk(
   async (param: any) => {
     const token = getToken();
     const result = await axios.put(
-      `http://localhost:4000/work/delete/${param.id}`,
+      `${process.env.NEXT_API_URL}/work/delete/${param.id}`,
       param,
       {
         headers: { Authorization: token },
@@ -82,7 +88,7 @@ export const createEducation = createAsyncThunk(
   async (param: any) => {
     const token = getToken();
     const result = await axios.put(
-      `http://localhost:4000/education/${param.id}`,
+      `${process.env.NEXT_API_URL}/education/${param.id}`,
       param,
       {
         headers: { Authorization: token },
@@ -96,7 +102,7 @@ export const deleteEducation = createAsyncThunk(
   async (param: any) => {
     const token = getToken();
     const result = await axios.put(
-      `http://localhost:4000/education/delete/${param.id}`,
+      `${process.env.NEXT_API_URL}/education/delete/${param.id}`,
       param,
       {
         headers: { Authorization: token },
