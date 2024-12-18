@@ -12,27 +12,15 @@ import toast, { Toaster } from "react-hot-toast";
 const page = ({ params }: { params: { id: string } }) => {
   const user = useSelector((state: RootState) => state.User);
   const dataUser = user.dataDetail;
-  const [tab, setTab] = useState<string>(
-    dataUser && dataUser?.is_admin ? "Admin" : "Profile Inofmation"
-  );
-  const tabs: string[] = dataUser?.is_admin
-    ? ["Admin"]
-    : ["Profile Inofmation", "Application"];
-  let tabComp: any;
-  console.log({ tabs, tab });
+  const [tab, setTab] = useState<
+    "adminApplication" | "profileInformation" | "application"
+  >(dataUser && dataUser?.is_admin ? "adminApplication" : "profileInformation");
 
-  switch (tab) {
-    case "Profile Inofmation":
-      tabComp = <ProfileInformation />;
-      break;
-    case "Application":
-      tabComp = <Application />;
-      break;
-    case "Admin":
-      tabComp = <Admin />;
-      break;
-  }
-
+  const tabComp = {
+    profileInformation: <ProfileInformation />,
+    adminApplication: <Admin />,
+    application: <Application />,
+  };
   return (
     <div className="">
       <Navbar />
@@ -40,22 +28,41 @@ const page = ({ params }: { params: { id: string } }) => {
         <h1 className="text-3xl font-bold">{dataUser?.username}</h1>
 
         <div className="mt-5">
-          <div className="text-[19px] text-neutral-500 flex">
-            {tabs.map((val, key) => {
-              return (
-                <h1
-                  className={`mr-5 font-semibold ${
-                    val === tab && "text-green-600 border-b-2 border-green-600"
-                  } hover:border-green-600 hover:border-b-2 hover:cursor-pointer`}
-                  onClick={() => setTab(val)}
-                  key={key}
+          <div className="text-sm text-center font-semibold text-gray-500 border-b  ">
+            <ul className="flex flex-wrap -mb-px">
+              <li className="me-2 cursor-pointer">
+                <p
+                  className={`${
+                    tab == "profileInformation"
+                      ? "text-green-600 border-b-2 border-green-600"
+                      : ""
+                  } inline-block p-4  rounded-t-lg active`}
+                  aria-current="page"
+                  onClick={() => setTab("profileInformation")}
                 >
-                  {val}
-                </h1>
-              );
-            })}
+                  Profile Information
+                </p>
+              </li>
+              <li className="me-2 cursor-pointer">
+                <p
+                  onClick={() =>
+                    setTab(
+                      dataUser?.is_admin ? "adminApplication" : "application"
+                    )
+                  }
+                  className={`${
+                    tab == "application" || tab == "adminApplication"
+                      ? "text-green-600 border-b-2 border-green-600"
+                      : ""
+                  } inline-block p-4  rounded-t-lg active`}
+                >
+                  Application
+                </p>
+              </li>
+            </ul>
           </div>
-          {tabComp}
+
+          {tabComp[tab]}
         </div>
       </div>
       <Toaster position="top-right" />

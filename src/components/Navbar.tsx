@@ -6,8 +6,10 @@ import { ThunkDispatch, AnyAction } from "@reduxjs/toolkit";
 import { RootState } from "@/redux/reducer";
 import { getDataProfile } from "@/redux/UserSlice";
 import { getToken } from "@/utils";
+import { usePathname } from "next/navigation";
 const index = () => {
   const token = getToken();
+  const path = usePathname();
   const dispatch: ThunkDispatch<RootState, undefined, AnyAction> =
     useDispatch();
   const user = useSelector((state: RootState) => state.User);
@@ -18,19 +20,27 @@ const index = () => {
 
   return (
     <div className="px-10">
-      <div className="flex justify-between  py-5 font-semibold underline">
-        <h1>Careers</h1>
-
+      <div
+        className={`flex ${
+          path == "/" ? "text-white" : "text-black"
+        } no-underline justify-between  py-5 font-semibold `}
+      >
+        <Link href="/" className="hover:text-green-200">
+          Cuy Career
+        </Link>
         {token && dataUser && dataUser._id ? (
           <Link href={`/profile/${dataUser._id}`}>Profile</Link>
         ) : (
-          <div>
-            <Link href="/login" className="mr-2">
+          <div className="space-x-4">
+            <Link href="/login" className="hover:text-green-200">
               Login
             </Link>
-            |
-            <Link href="/register" className="ml-2">
-              Register
+            <span>|</span>
+            <Link
+              href="/register"
+              className="hover:text-green-200 font-semibold"
+            >
+              Registersss
             </Link>
           </div>
         )}

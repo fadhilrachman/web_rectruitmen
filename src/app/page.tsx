@@ -8,7 +8,8 @@ import { RootState } from "@/redux/reducer";
 import { useDispatch, useSelector } from "react-redux";
 import { getDataJob } from "@/redux/jobSlice";
 import { QueryParam } from "@/utils/interfaces/job";
-
+import Particles from "react-particles";
+import { loadSlim } from "tsparticles-slim";
 interface WorkEnv {
   img: string;
   title: string;
@@ -79,47 +80,62 @@ export default function Home() {
         "We seriously put our concern in employee health and wellbeing even by pushing them with incentives",
     },
   ];
-  const job: Job[] = [
-    {
-      title: "Frontend Developer",
-      level: "JUNIOR",
-    },
-    {
-      title: "Baceknd Developer",
-      level: "JUNIOR - INTEMADIATE",
-    },
-    {
-      title: "Golang Developer",
-      level: "JUNIOR",
-    },
-    {
-      title: "Wordpress Developer",
-      level: "SENIOR",
-    },
-    {
-      title: "Laravel Developer",
-      level: "SENIOR",
-    },
-    {
-      title: "Devops Engineer",
-      level: "INTEMADIATE",
-    },
-  ];
+  const particlesInit = async (engine: any) => {
+    // Load Slim untuk partikel ringan
+    await loadSlim(engine);
+  };
   return (
     <main className="">
-      <div className="flex flex-col justify-between border min-h-screen pb-20 px-10 bg-green-600 text-white">
+      <div className="relative !h-screen bg-gradient-to-b ">
+        <Particles
+          id="tsparticles"
+          init={particlesInit}
+          className="z-10"
+          options={{
+            fullScreen: {
+              enable: true,
+              zIndex: -1, // Letakkan di latar belakang
+            },
+            background: {
+              color: { value: "#16A34A" }, // Warna background
+            },
+            particles: {
+              number: { value: 100, density: { enable: true, area: 800 } },
+              color: { value: "#ffffff" }, // Warna partikel
+              shape: { type: "circle" }, // Bentuk partikel
+              opacity: { value: 0.7, random: true }, // Transparansi
+              size: { value: { min: 1, max: 4 }, random: true }, // Ukuran partikel
+              move: {
+                enable: true,
+                speed: 1.5, // Kecepatan partikel
+                direction: "bottom", // Jatuh ke bawah
+                outModes: { default: "out" }, // Reset posisi partikel
+              },
+            },
+            detectRetina: true,
+          }}
+        />
         <Navbar />
-        <div>
-          <h1 className="text-[45px] font-bold max-w-[900px] mb-4">
-            Hone your skill in an agile, techy, and ever-growing environment
+        <div className="absolute  mt-20 inset-0 flex flex-col items-center justify-center text-white text-center px-6">
+          <h1 className="text-5xl md:text-6xl font-extrabold leading-tight mb-6 animate-fade-in">
+            Hone your skill in an
+            <span className="text-yellow-300"> agile</span>,{" "}
+            <span className="text-yellow-300">techy</span>, <br /> and
+            <span className="text-yellow-300"> ever-growing</span> environment
           </h1>
-          <h3 className="font-bold text-[20px] mb-5">
+          <p className="text-lg md:text-xl mb-8 max-w-2xl">
             We invite the best talents to collaborate with us in challenging
-            projects from all around the world
-          </h3>
+            projects from all around the world.
+          </p>
+          <a
+            href="#"
+            className="bg-yellow-400 text-gray-900 px-8 py-3 rounded-full font-semibold hover:bg-yellow-300 transition"
+          >
+            Join Us
+          </a>
         </div>
       </div>
-      <div className="text-center py-10 border px-10">
+      <div className="z-50 bg-white text-center py-16 border px-10">
         <h1 className="font-bold text-4xl ">Working Environment</h1>
         <div className="mt-20 grid  grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10  ">
           {workEnv.map((val, key) => {
@@ -134,11 +150,11 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="text-center py-10 font-bold text-[30px] px-10 bg-green-600 text-white">
+      <div className="text-center py-16 font-bold text-[30px] px-10 bg-green-600 text-white">
         Our mission is to create an agile, fair, fail-safe, humanist, and
         harmony working environment
       </div>
-      <div className="py-10 pt-20 ">
+      <div className="py-16 bg-white ">
         <h1 className="font-bold text-[35px] text-center">
           Did you feel that your interest is piqued?
         </h1>
@@ -146,12 +162,12 @@ export default function Home() {
           Find suitable position for you below. Feel free to contact us if you
           can't find any.
         </p>
-        <div className="py-10 px-10 bg-neutral-200 mt-8 ">
+        <div className="py-10 px-10  mt-8 ">
           <div>
             <input
               type="text"
               placeholder="Search job.."
-              className="bg-white mb-5 focus:outline-none py-2 px-3 w-full sm:w-min"
+              className=" mb-5 bg-neutral-200 focus:outline-none py-2 px-3 w-full sm:w-min"
               onChange={(e) => setParam({ ...param, search: e.target.value })}
             />
           </div>
@@ -182,7 +198,7 @@ export default function Home() {
             ) : (
               dataJob?.map((val: any, key: number) => {
                 return (
-                  <div className="bg-white px-5 py-4 " key={key}>
+                  <div className="bg-neutral-200 px-5 py-4 " key={key}>
                     <h3>{val.job_name}</h3>
                     <p className="font-light text-neutral-400 text-sm mt-1 mb-5">
                       {val.level}
@@ -215,7 +231,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className="px-10 py-10 text-neutral-500">
+      <div className="px-10 py-10 text-white bg-green-600">
         <div>Created by Muhammad Fadhil Rahman</div>
       </div>
     </main>

@@ -23,22 +23,21 @@ const Admin = () => {
       dispatch(getDataApplication({ user: "" }));
     }
   }, [dataUser]);
-  console.log({ application });
 
   return (
     <div className="mt-8">
       <div className="mb-5 text-neutral-500">
         <div className="flex items-center">
           <div className="w-2 h-2 rounded-full mr-2 bg-red-300"></div>
-          <small> unsuccessful</small>
+          <small> Failed</small>
         </div>
         <div className="flex items-center">
           <div className="w-2 h-2 rounded-full mr-2 bg-neutral-200"></div>
-          <small>in review</small>
+          <small>On Review</small>
         </div>
         <div className="flex items-center">
           <div className="w-2 h-2 rounded-full mr-2 bg-green-600"></div>
-          <small>other</small>
+          <small>Success</small>
         </div>
       </div>
       <div className=" grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">

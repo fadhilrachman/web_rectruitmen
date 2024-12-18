@@ -8,6 +8,7 @@ import { getDataJob, getDetailJob } from "@/redux/jobSlice";
 import { ThunkDispatch, AnyAction } from "@reduxjs/toolkit";
 import ModalApplication from "@/components/Modal/ModalApplication";
 import toast, { Toaster } from "react-hot-toast";
+import { formatRupiah } from "@/utils";
 
 const index = ({ params }: { params: { id: string } }) => {
   const { id } = params;
@@ -48,7 +49,10 @@ const index = ({ params }: { params: { id: string } }) => {
             </div>
             <div className="flex justify-between">
               <h3 className="text-gray-400 text-[15px] mt-4">
-                Salary Rp.{dataJob.salary}
+                Salary{" "}
+                <span className="font-bold">
+                  {formatRupiah(dataJob.salary)}
+                </span>
               </h3>
               <h3 className="text-gray-400 text-[15px] mt-4">
                 {dataJob.level} Level
